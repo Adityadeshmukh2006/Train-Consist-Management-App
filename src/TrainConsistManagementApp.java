@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-// Bogie class (same as UC7)
+// Bogie class
 class Bogie {
     String name;
     int capacity;
@@ -24,21 +25,22 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Original bogie list
+        // Create bogie list
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 54));
+        bogies.add(new Bogie("Sleeper", 70));      // duplicate type
         bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("AC Chair", 56));     // duplicate type
 
-        // Filter bogies with capacity > 60
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Group bogies by name/type
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        // Display filtered bogies
-        System.out.println("Filtered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
+        // Display grouped bogies
+        System.out.println("Grouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 
         // Show original list unchanged
@@ -46,3 +48,4 @@ public class TrainConsistManagementApp {
         System.out.println(bogies);
     }
 }
+
